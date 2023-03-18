@@ -14,11 +14,12 @@ class Spot(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Spot: {self.title} / Description: {self.description}"
+        return f"Spot: {self.as_dict()}"
     
     def as_dict(self):
         return {
             'id': self.id,
             'title': self.title,
             'description': self.description,
+            'owner': self.owner,
         }

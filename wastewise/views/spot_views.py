@@ -5,7 +5,7 @@ from rest_framework import status, generics
 from rest_framework.response import Response
 
 from ..models.spot import Spot
-from ..serializers import SpotSerializer, SpotReadSerializer, SpotWriteSerializer
+from ..serializers import SpotSerializer, SpotReadSerializer, SpotWriteSerializer, SpotUpdateSerializer
 
 class SpotsView(generics.ListCreateAPIView):
     """
@@ -43,11 +43,13 @@ class SpotDetailView(generics.RetrieveUpdateDestroyAPIView):
     def patch(self, request, pk):
         """Update single spot"""
         spot = get_object_or_404(Spot, pk=pk)
-        serializer = SpotSerializer(spot, data=request.data)
-
+        # print(spot)
+        serializer = SpotUpdateSerializer(spot, data=request.data)
+        # print(request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
+        # print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
